@@ -1,0 +1,11 @@
+har@har-VirtualBox:~$ cat stats.sh
+#!/bin/sh
+
+mem=`free -m | awk 'NR==2{printf $3*100/$2 }'`
+disk=`df -h | grep '/dev/sda5' | gawk '{ printf $5 " " $1}''`
+cpu=`top -bn1 | grep load | awk '{printf $(NF)}'`
+
+PGPASSWORD=123 psql -h localhost -U test <<EOF
+INSERT INTO "VM_details_performance"(memory,disk,cpu) VALUES ('$mem','$disk','$c                                                                                        pu')
+EOF
+exit;
